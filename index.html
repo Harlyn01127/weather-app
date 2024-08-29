@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+   <meta charset="UTF-8">
+   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+   <title>Weather Update - Iligan City</title>
+   <style>
+       body {
+           font-family: Arial, sans-serif;
+           background-color: #f0f8ff;
+           color: #333;
+           padding: 20px;
+           text-align: center;
+           background-image: url(clouds-sky-horizontal-shot\ -\ Copy.jpg);
+           background-repeat: no-repeat;
+           background-size: auto;
+          
+       }
+       #weather {
+           margin-top: 30px;
+         
+           display: flex;
+          
+       }
+       .weather-data{
+         margin: 20px;
+         border: solid 1px rgba(0, 0, 0, 0.715);
+         margin: 10px;
+         border-radius: 15px;
+         padding: 40px ;
+         margin-top: 10px;
+         background-image: url(pexels-brett-sayles-1431822.jpg);
+         color: #f0f8ff;
+       }
+
+       h1{
+        color: black;
+        font-size: 55px;
+        margin-top: 80px;
+       }
+       footer{
+        color: black;
+        font-size: 20px;
+        margin-bottom: 50px;
+        text-align: right;
+       }
+
+   </style>
+</head>
+<body>
+   <h1>Weather Update - Iligan City</h1>
+   <div id="weather">
+
+   </div>
+   
+   <script>
+document.addEventListener('DOMContentLoaded', async function() {
+   const apiKey = 'e312b49ba1e3420fbef03304242208';
+   const cityName = 'Iligan CIty';
+   const apiEndpoint = `https://api.weatherapi.com/v1/forecast.json?key=${apiKey}&q=${cityName}&days=7`;
+
+
+   try {
+       const response = await fetch(apiEndpoint); // Wait for the fetch to complete
+       const weatherData = await response.json(); // Wait for the response to be parsed into JSON
+       console.log(weatherData);
+
+
+       const weatherContainer = document.getElementById('weather');
+       const temperatureInCelsius = weatherData.current.temp_c;
+       const weatherDescription = weatherData.current.condition.text;
+       const humidityLevel = weatherData.current.humidity;
+
+       console.log(weatherData)
+
+       weatherData.forecast.forecastday.forEach(element =>{
+       console.log(element)
+       weatherContainer.innerHTML += `
+           <div class="weather-data">
+           <p><strong>Date:</strong> ${element.date}</p>
+             <p> <img src = "https:${element.day.condition.icon}"></p>
+           <p><strong>Temperature:</strong> ${element.day.avgtemp_c} C</p>
+           <p><strong>Weather:</strong> ${element.day.condition.text}</p>
+           <p><strong>Humidity:</strong> ${element.day.avghumidity}%</p>
+           </div>
+       `;
+       })
+
+   } catch (error) {
+       const weatherContainer = document.getElementById('weather');
+       weatherContainer.innerHTML = `<p>Unable to retrieve weather data: ${error.message}</p>`;
+   }
+});
+   </script>
+  <footer> Harlyn Mae T. Yanez (8/22/24)</footer>
+</body>
+</html>
